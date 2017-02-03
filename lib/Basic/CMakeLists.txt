@@ -1,14 +1,10 @@
 
 # On non-Darwin require UUID.
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  set(UUID_INCLUDE "")
-  set(UUID_LIBRARIES "")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  set(UUID_INCLUDE "")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   set(UUID_LIBRARIES "ole32.lib")
-else()
+elseif(NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   find_package(UUID REQUIRED)
-  set(UUID_INCLUDE "-I${UUID_INCLUDE_DIRS}")
+  include_directories(AFTER ${UUID_INCLUDE_DIRS})
 endif()
 
 # Figure out if we can track VC revisions.
@@ -108,7 +104,6 @@ add_swift_library(swiftBasic STATIC
 
   UnicodeExtendedGraphemeClusters.cpp.gyb
 
-  C_COMPILE_FLAGS ${UUID_INCLUDE}
   LINK_LIBRARIES ${UUID_LIBRARIES}
   LLVM_COMPONENT_DEPENDS support)
 
