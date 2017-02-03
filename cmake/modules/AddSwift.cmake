@@ -1195,9 +1195,8 @@ endfunction()
 #     [SHARED]
 #     [STATIC]
 #     [DEPENDS dep1 ...]
-#     [LINK_LIBRARIES dep1 ...]
-#     [LLVM_COMPONENT_DEPENDS comp1 ...]
-#     [INSTALL]
+#     [LINK_LIBS dep1 ...]
+#     [LINK_COMPONENTS comp1 ...]
 #     source1 [source2 source3 ...])
 #
 # name
@@ -1206,37 +1205,17 @@ endfunction()
 # DEPENDS
 #   Targets that this library depends on.
 #
-# LINK_LIBRARIES
+# LINK_LIBS
 #   Libraries this library depends on.
 #
-# LLVM_COMPONENT_DEPENDS
+# LINK_COMPONENTS
 #   LLVM components this library depends on.
 #
 # source1 ...
 #   Sources to add into this library.
 function(add_swift_library name)
-  cmake_parse_arguments(SWIFTLIB
-    ""
-    ""
-    "LINK_LIBRARIES;LLVM_COMPONENT_DEPENDS"
-    ${ARGN})
 
-  if(SWIFTLIB_LLVM_COMPONENT_DEPENDS)
-    set(SWIFTLIB_LLVM_COMPONENT_DEPENDS
-      LINK_COMPONENTS
-      ${SWIFTLIB_LLVM_COMPONENT_DEPENDS})
-  endif()
-
-  if(SWIFTLIB_LINK_LIBRARIES)
-    set(SWIFTLIB_LINK_LIBRARIES
-      LINK_LIBS
-      ${SWIFTLIB_LINK_LIBRARIES})
-  endif()
-
-  llvm_add_library(${name}
-    ${SWIFTLIB_LLVM_COMPONENT_DEPENDS}
-    ${SWIFTLIB_LINK_LIBRARIES}
-    ${SWIFTLIB_UNPARSED_ARGUMENTS})
+  llvm_add_library(${name} ${ARGN})
 
   swift_install_in_component(dev
       TARGETS ${name}
