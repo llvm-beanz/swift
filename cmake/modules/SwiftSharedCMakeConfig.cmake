@@ -197,7 +197,7 @@ macro(swift_common_standalone_build_config_cmark product)
   include_directories("${CMARK_MAIN_INCLUDE_DIR}"
                       "${CMARK_BUILD_INCLUDE_DIR}")
 
-  set(CMARK_LIB ${CMARK_LIBRARY_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}cmark${CMAKE_STATIC_LIBRARY_SUFFIX})
+  include(${CMARK_LIBRARY_DIR}/CMarkExports.cmake)
 endmacro()
 
 # Common cmake project config for standalone builds.
@@ -250,8 +250,6 @@ macro(swift_common_unified_build_config product)
 
     set(CMARK_BUILD_INCLUDE_DIR "${PATH_TO_CMARK_BUILD}/src")
     set(CMARK_MAIN_INCLUDE_DIR "${CMARK_MAIN_SRC_DIR}/src")
-
-    set(CMARK_LIB libcmark_static)
   endif()
 
   

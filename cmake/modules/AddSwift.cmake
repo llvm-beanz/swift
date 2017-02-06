@@ -964,12 +964,6 @@ function(_add_swift_library_single target name)
       else()
         set(dep "${LLVM_LIBRARY_OUTPUT_INTDIR}/lib${dep}.a")
       endif()
-    elseif("${dep}" STREQUAL "cmark")
-      if("${SWIFT_HOST_VARIANT_SDK}" STREQUAL "WINDOWS")
-        set(dep "${CMARK_LIBRARY_DIR}/${dep}.lib")
-      else()
-        set(dep "${CMARK_LIBRARY_DIR}/lib${dep}.a")
-      endif()
     endif()
     list(APPEND prefixed_link_libraries "${dep}")
   endforeach()
@@ -1216,6 +1210,8 @@ endfunction()
 function(add_swift_library name)
 
   llvm_add_library(${name} ${ARGN})
+
+  set_property(GLOBAL APPEND PROPERTY SWIFT_DEV_EXPORTS ${name})
 
   swift_install_in_component(dev
       TARGETS ${name}

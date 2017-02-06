@@ -897,3 +897,12 @@ if(XCODE)
   add_custom_target(Miscellaneous
       SOURCES ${SWIFT_TOPLEVEL_HEADERS})
 endif()
+
+# Generate Target exprot file
+
+set(cmake_builddir "${SWIFT_BINARY_DIR}/lib${LLVM_LIBDIR_SUFFIX}/cmake/swift")
+
+# First for users who use an installed LLVM, create the LLVMExports.cmake file.
+set(SWIFT_EXPORTS_FILE ${cmake_builddir}/SwiftExports.cmake)
+get_property(SWIFT_DEV_EXPORTS GLOBAL PROPERTY SWIFT_DEV_EXPORTS)
+export(TARGETS ${SWIFT_DEV_EXPORTS} FILE ${SWIFT_EXPORTS_FILE})
